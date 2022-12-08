@@ -21,6 +21,9 @@ export function tokenQuery(
     if (modifier && !SUPPORTED_MODIFIERS.includes(modifier)) {
         throw new InvalidSearchParameterError(`Unsupported token search modifier: ${modifier}`);
     }
+
+    console.log({compiled, value, useKeywordSubFields, modifier})
+
     const { system, code, explicitNoSystemProperty } = value;
     const queries = [];
     const useKeywordSuffix = useKeywordSubFields && !FIELDS_WITHOUT_KEYWORD.includes(compiled.path);
@@ -86,9 +89,13 @@ export function tokenQuery(
         return queries[0];
     }
 
-    return {
+    const returnObj = {
         bool: {
             must: queries,
         },
     };
+
+    console.log("this is the built query", JSON.stringify(returnObj)); 
+
+    return returnObj
 }
