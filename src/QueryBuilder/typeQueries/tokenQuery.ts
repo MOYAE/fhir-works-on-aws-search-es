@@ -22,7 +22,7 @@ export function tokenQuery(
         throw new InvalidSearchParameterError(`Unsupported token search modifier: ${modifier}`);
     }
 
-    console.log({compiled, value, useKeywordSubFields, modifier})
+    console.log({ compiled, value, useKeywordSubFields, modifier });
 
     const { system, code, explicitNoSystemProperty } = value;
     const queries = [];
@@ -95,7 +95,7 @@ export function tokenQuery(
         },
     };
 
-    console.log("this is the built query", JSON.stringify(returnObj)); 
+    console.log('this is the built query', JSON.stringify(returnObj));
 
-    return returnObj
+    return returnObj;
 }

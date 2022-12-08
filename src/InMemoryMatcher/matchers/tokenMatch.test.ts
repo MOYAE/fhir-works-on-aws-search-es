@@ -149,6 +149,18 @@ describe('tokenMatch', () => {
                         'male',
                     ),
                 ).toBe(false);
+
+                expect(
+                    tokenMatch(
+                        {
+                            code: 'order',
+                            explicitNoSystemProperty: true,
+                        },
+                        'original-order',
+                    ),
+                ).toBe(false);
+
+
             });
         });
     });
