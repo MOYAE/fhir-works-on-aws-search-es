@@ -7,8 +7,6 @@
 *.zip
 
 Info_Output.yml
-dist
-lib
 .build
 .idea
 yarn-error.log

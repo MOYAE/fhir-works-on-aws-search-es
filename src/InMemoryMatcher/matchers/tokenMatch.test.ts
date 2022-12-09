@@ -159,8 +159,6 @@ describe('tokenMatch', () => {
                         'original-order',
                     ),
                 ).toBe(false);
-
-
             });
         });
     });
