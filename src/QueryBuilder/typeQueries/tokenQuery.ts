@@ -6,6 +6,9 @@
 import { InvalidSearchParameterError } from 'fhir-works-on-aws-interface';
 import { CompiledSearchParam } from '../../FHIRSearchParametersRegistry';
 import { TokenSearchValue } from '../../FhirQueryParser';
+import getComponentLogger from '../../loggerBuilder';
+
+const logger = getComponentLogger();
 
 // Fields that do not have `.keyword` suffix. This is only important if `useKeywordSubFields` is true
 const FIELDS_WITHOUT_KEYWORD = ['id'];
@@ -22,9 +25,16 @@ export function tokenQuery(
         throw new InvalidSearchParameterError(`Unsupported token search modifier: ${modifier}`);
     }
 
-    console.log({ compiled, value, useKeywordSubFields, modifier });
+    logger.error(`compiled: ${JSON.stringify(compiled)}`);
+    logger.error(`value: ${JSON.stringify(value)}`);
+    logger.error(`useKeywordSubFields: ${useKeywordSubFields}`);
+    logger.error(`modifer: ${modifier}`);
 
     const { system, code, explicitNoSystemProperty } = value;
+
+    logger.error(`system: ${system}`);
+    logger.error(`code: ${code}`);
+    logger.error(`explicitNoSystemProperty: ${explicitNoSystemProperty}`);
     const queries = [];
     const useKeywordSuffix = useKeywordSubFields && !FIELDS_WITHOUT_KEYWORD.includes(compiled.path);
     const keywordSuffix = useKeywordSuffix ? '.keyword' : '';
@@ -86,6 +96,8 @@ export function tokenQuery(
     }
 
     if (queries.length === 1) {
+        logger.error('fell into here');
+        logger.error(queries[0]);
         return queries[0];
     }
 
@@ -95,7 +107,7 @@ export function tokenQuery(
         },
     };
 
-    console.log('this is the built query', JSON.stringify(returnObj));
+    logger.error(`this is the built query, ${JSON.stringify(returnObj)}`);
 
     return returnObj;
 }

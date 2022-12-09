@@ -83,6 +83,12 @@ describe('tokenMatch', () => {
                     system: undefined,
                 };
 
+                const intentParam = {
+                    code: 'order',
+                    explicitNoSystemProperty: false,
+                    system: undefined,
+                };
+
                 expect(
                     tokenMatch(tokenParam, {
                         code: 'code',
@@ -97,6 +103,8 @@ describe('tokenMatch', () => {
                 ).toBe(true);
 
                 expect(tokenMatch(tokenParam, 'code')).toBe(true);
+
+                expect(tokenMatch(intentParam, 'original-order')).toBe(false);
 
                 expect(
                     tokenMatch(tokenParam, {

@@ -71,13 +71,13 @@ export class StreamSubscriptionMatcher {
         this.fhirSearchParametersRegistry = new FHIRSearchParametersRegistry(fhirVersion, compiledImplementationGuides);
 
         this.activeSubscriptions = new AsyncRefreshCache<Subscription[]>(async () => {
-            logger.info('Refreshing cache of active subscriptions...');
+            logger.error('Refreshing cache of active subscriptions...');
 
             const activeSubscriptions: Subscription[] = (await this.persistence.getActiveSubscriptions({})).map(
                 (resource) => parseSubscription(resource, this.fhirSearchParametersRegistry),
             );
 
-            logger.info(`found ${activeSubscriptions.length} active subscriptions`);
+            logger.error(`found ${activeSubscriptions.length} active subscriptions`);
 
             return activeSubscriptions;
         }, ACTIVE_SUBSCRIPTIONS_CACHE_REFRESH_TIMEOUT);
@@ -96,12 +96,12 @@ export class StreamSubscriptionMatcher {
     }
 
     async match(dynamoDBStreamEvent: DynamoDBStreamEvent): Promise<void> {
-        logger.info(`DynamoDb records in event: ${dynamoDBStreamEvent.Records.length}`);
+        logger.error(`DynamoDb records in event: ${dynamoDBStreamEvent.Records.length}`);
         const eligibleResources = filterOutIneligibleResources(dynamoDBStreamEvent);
-        logger.info(`FHIR resource create/update records: ${eligibleResources.length}`);
+        logger.error(`FHIR resource create/update records: ${eligibleResources.length}`);
 
         const activeSubscriptions = await this.activeSubscriptions.get();
-        logger.info(`Active Subscriptions: ${activeSubscriptions.length}`);
+        logger.error(`Active Subscriptions: ${activeSubscriptions.length}`);
 
         const subscriptionNotifications: SubscriptionNotification[] = activeSubscriptions.flatMap((subscription) => {
             return eligibleResources
@@ -109,7 +109,7 @@ export class StreamSubscriptionMatcher {
                 .map((resource) => buildNotification(subscription, resource));
         });
 
-        logger.info(
+        logger.error(
             'Summary of notifications:',
             JSON.stringify(
                 subscriptionNotifications.map((s) => ({
@@ -134,6 +134,6 @@ export class StreamSubscriptionMatcher {
                 return this.snsClient.send(command);
             }),
         );
-        logger.info(`Notifications sent: ${subscriptionNotifications.length}`);
+        logger.error(`Notifications sent: ${subscriptionNotifications.length}`);
     }
 }

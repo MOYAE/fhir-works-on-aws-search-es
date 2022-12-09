@@ -156,7 +156,7 @@ export class ElasticSearchService implements Search {
                 : DEFAULT_SEARCH_RESULTS_PER_PAGE;
 
             if (from + size > MAX_ES_WINDOW_SIZE) {
-                logger.info(
+                logger.error(
                     `Search request is out of bound. Trying to access ${from} to ${
                         from + size
                     } which is outside of the max: ${MAX_ES_WINDOW_SIZE}`,
@@ -361,7 +361,7 @@ export class ElasticSearchService implements Search {
         } catch (error) {
             // Indexes are created the first time a resource of a given type is written to DDB.
             if (error instanceof ResponseError && error.meta.body.error.type === 'index_not_found_exception') {
-                logger.info(
+                logger.error(
                     `Search index for ${getAliasName(
                         searchQuery.resourceType,
                         request.tenantId,
@@ -405,7 +405,7 @@ export class ElasticSearchService implements Search {
                 if (response.error) {
                     if (response.error.type === 'index_not_found_exception') {
                         // Indexes are created the first time a resource of a given type is written to DDB.
-                        logger.info(
+                        logger.error(
                             `Search index for ${response.error.index} does not exist. Returning an empty search result`,
                         );
                         return false;
@@ -499,7 +499,7 @@ export class ElasticSearchService implements Search {
         );
         const resourceIdsWithInclusionsAlreadyResolved: Set<string> = new Set();
 
-        logger.info('Iterative inclusion search starts');
+        logger.error('Iterative inclusion search starts');
 
         let resourcesToIterate = searchEntries;
         for (let i = 0; i < MAX_INCLUDE_ITERATIVE_DEPTH; i += 1) {
@@ -515,7 +515,7 @@ export class ElasticSearchService implements Search {
                 resourceIdsWithInclusionsAlreadyResolved.add(resource.resource.id),
             );
             if (resourcesFound.length === 0) {
-                logger.info(`Iteration ${i} found zero results. Stopping`);
+                logger.error(`Iteration ${i} found zero results. Stopping`);
                 break;
             }
 
@@ -528,13 +528,13 @@ export class ElasticSearchService implements Search {
             });
 
             if (i === MAX_INCLUDE_ITERATIVE_DEPTH - 1) {
-                logger.info('MAX_INCLUDE_ITERATIVE_DEPTH reached. Stopping');
+                logger.error('MAX_INCLUDE_ITERATIVE_DEPTH reached. Stopping');
                 break;
             }
             resourcesToIterate = resourcesFound.filter(
                 (r) => !resourceIdsWithInclusionsAlreadyResolved.has(r.resource.id),
             );
-            logger.info(`Iteration ${i} found ${resourcesFound.length} resources`);
+            logger.error(`Iteration ${i} found ${resourcesFound.length} resources`);
         }
         return result;
     }
@@ -550,7 +550,7 @@ export class ElasticSearchService implements Search {
 
     // eslint-disable-next-line class-methods-use-this
     async globalSearch(request: GlobalSearchRequest): Promise<SearchResponse> {
-        logger.info(request);
+        logger.error(request);
         this.assertValidTenancyMode(request.tenantId);
         throw new Error('Method not implemented.');
     }

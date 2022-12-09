@@ -9,6 +9,9 @@ import { parseTokenSearchValue } from '../../FhirQueryParser/typeParsers/tokenPa
 
 const fhirSearchParametersRegistry = new FHIRSearchParametersRegistry('4.0.1');
 const identifierParam = fhirSearchParametersRegistry.getSearchParameter('Patient', 'identifier')!.compiled[0];
+// const intentParam = { resourceType: 'MedicationRequest', path: 'intent' };
+
+console.log('this is identifierParam', identifierParam);
 
 describe('tokenQuery', () => {
     test('system|code', () => {
@@ -129,6 +132,7 @@ describe('tokenQuery', () => {
             }
         `);
     });
+
     test('code; without keyword', () => {
         expect(tokenQuery(identifierParam, parseTokenSearchValue('http://acme.org/patient|2345'), false))
             .toMatchInlineSnapshot(`
@@ -162,6 +166,7 @@ describe('tokenQuery', () => {
             }
         `);
     });
+
     test('boolean', () => {
         expect(tokenQuery(identifierParam, parseTokenSearchValue('true'), true)).toMatchInlineSnapshot(`
             Object {

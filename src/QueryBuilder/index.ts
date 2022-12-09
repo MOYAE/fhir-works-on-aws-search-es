@@ -23,6 +23,9 @@ import {
     TokenSearchValue,
 } from '../FhirQueryParser';
 import { ReferenceSearchValue } from '../FhirQueryParser/typeParsers/referenceParser';
+import getComponentLogger from '../loggerBuilder';
+
+const logger = getComponentLogger();
 
 function typeQueryWithConditions(
     searchParam: SearchParam,
@@ -41,6 +44,7 @@ function typeQueryWithConditions(
             typeQuery = dateQuery(compiledSearchParam, searchValue as DateSearchValue, modifier);
             break;
         case 'token':
+            logger.error('the searchParam type is token');
             typeQuery = tokenQuery(compiledSearchParam, searchValue as TokenSearchValue, useKeywordSubFields, modifier);
             break;
         case 'number':
@@ -66,6 +70,7 @@ function typeQueryWithConditions(
             );
             break;
         case 'uri':
+            logger.error('the searchParam type is uri');
             typeQuery = uriQuery(compiledSearchParam, searchValue as string, useKeywordSubFields, modifier);
             break;
         case 'composite':
