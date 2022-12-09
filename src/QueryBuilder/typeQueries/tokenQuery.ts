@@ -45,6 +45,7 @@ export function tokenQuery(
     // Queries can be simplified if Search gets to know the field types from the StructureDefinitions.
     // See: https://www.hl7.org/fhir/search.html#token
     if (system !== undefined) {
+        logger.error('inside of system is not undefined');
         const fields = [
             `${compiled.path}.system${keywordSuffix}`, // Coding, Identifier
             `${compiled.path}.coding.system${keywordSuffix}`, // CodeableConcept
@@ -62,6 +63,8 @@ export function tokenQuery(
     if (code !== undefined) {
         // '.code', '.coding.code', 'value' came from the original input data, e.g. language in Patient resource:
         // ${keywordSuffix} came from ElasticSearch field mapping
+
+        console.log('inside of code is not undefined');
         const fields = [
             `${compiled.path}.code${keywordSuffix}`, // Coding
             `${compiled.path}.coding.code${keywordSuffix}`, // CodeableConcept
@@ -74,13 +77,23 @@ export function tokenQuery(
             fields.push(`${compiled.path}`);
         }
 
-        queries.push({
-            multi_match: {
-                fields,
-                query: code,
-                lenient: true,
-            },
-        });
+        if (compiled.path === 'intent' && code === 'order') {
+            queries.push({
+                term: { intent: 'order' },
+            });
+        } else if (compiled.path === 'intent' && code === 'original-order') {
+            queries.push({
+                term: { intent: 'original-order' },
+            });
+        } else {
+            queries.push({
+                multi_match: {
+                    fields,
+                    query: code,
+                    lenient: true,
+                },
+            });
+        }
     }
 
     if (explicitNoSystemProperty) {
