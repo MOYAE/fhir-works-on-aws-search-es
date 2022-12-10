@@ -77,19 +77,11 @@ export function tokenQuery(
             fields.push(`${compiled.path}`);
         }
 
-        if (compiled.path === 'intent' && code === 'order') {
+        if (compiled.path === 'intent') {
             queries.push({
                 bool: {
                     must: {
-                        term: { 'intent.keyword': 'order' },
-                    },
-                },
-            });
-        } else if (compiled.path === 'intent' && code === 'original-order') {
-            queries.push({
-                bool: {
-                    must: {
-                        term: { 'intent.keyword': 'original-order' },
+                        term: { 'intent.keyword': code },
                     },
                 },
             });
