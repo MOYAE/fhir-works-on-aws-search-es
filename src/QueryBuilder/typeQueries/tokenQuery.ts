@@ -81,7 +81,7 @@ export function tokenQuery(
             queries.push({
                 bool: {
                     must: {
-                        term: { intent: 'order' },
+                        term: { 'intent.keyword': 'order' },
                     },
                 },
             });
@@ -89,7 +89,7 @@ export function tokenQuery(
             queries.push({
                 bool: {
                     must: {
-                        term: { intent: 'original-order' },
+                        term: { 'intent.keyword': 'original-order' },
                     },
                 },
             });
