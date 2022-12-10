@@ -6,7 +6,7 @@ import { QuantitySearchValue } from './typeParsers/quantityParser';
 import { ReferenceSearchValue } from './typeParsers/referenceParser';
 import { InclusionSearchParameter, WildcardInclusionSearchParameter } from '../searchInclusions';
 export { DateSearchValue, TokenSearchValue, NumberSearchValue, QuantitySearchValue };
-export declare type StringLikeSearchValue = string;
+export type StringLikeSearchValue = string;
 interface BaseQueryParam {
     name: string;
     modifier?: string;
@@ -48,7 +48,7 @@ export interface TokenQueryParam extends BaseQueryParam {
     type: 'token';
     parsedSearchValues: TokenSearchValue[];
 }
-export declare type QueryParam = StringQueryParam | DateQueryParam | NumberQueryParam | QuantityQueryParam | ReferenceQueryParam | TokenQueryParam | CompositeQueryParam | SpecialQueryParam | UriQueryParam;
+export type QueryParam = StringQueryParam | DateQueryParam | NumberQueryParam | QuantityQueryParam | ReferenceQueryParam | TokenQueryParam | CompositeQueryParam | SpecialQueryParam | UriQueryParam;
 export interface ParsedFhirQueryParams {
     resourceType: string;
     searchParams: QueryParam[];

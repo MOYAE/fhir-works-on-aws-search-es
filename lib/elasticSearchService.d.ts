@@ -1,6 +1,6 @@
 import { Search, TypeSearchRequest, SearchResponse, GlobalSearchRequest, SearchFilter, FhirVersion } from 'fhir-works-on-aws-interface';
 import { Client, RequestParams } from '@elastic/elasticsearch';
-export declare type Query = {
+export type Query = {
     resourceType: string;
     queryRequest: RequestParams.Search<Record<string, any>>;
 };

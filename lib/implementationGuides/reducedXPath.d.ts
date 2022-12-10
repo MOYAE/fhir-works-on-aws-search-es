@@ -14,7 +14,7 @@ interface NearleyRule {
     symbols: NearleySymbol[];
     postprocess?: (d: any[], loc?: number, reject?: {}) => any;
 }
-declare type NearleySymbol = string | {
+type NearleySymbol = string | {
     literal: any;
 } | {
     test: (token: any) => boolean;

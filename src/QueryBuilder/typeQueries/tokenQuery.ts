@@ -79,11 +79,19 @@ export function tokenQuery(
 
         if (compiled.path === 'intent' && code === 'order') {
             queries.push({
-                term: { intent: 'order' },
+                bool: {
+                    must: {
+                        term: { intent: 'order' },
+                    },
+                },
             });
         } else if (compiled.path === 'intent' && code === 'original-order') {
             queries.push({
-                term: { intent: 'original-order' },
+                bool: {
+                    must: {
+                        term: { intent: 'original-order' },
+                    },
+                },
             });
         } else {
             queries.push({

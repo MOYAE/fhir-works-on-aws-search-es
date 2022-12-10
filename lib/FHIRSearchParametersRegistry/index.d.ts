@@ -43,12 +43,12 @@ import { FhirVersion, SearchCapabilityStatement } from 'fhir-works-on-aws-interf
  *  }
  *
  */
-export declare type CompiledSearchParam = {
+export type CompiledSearchParam = {
     resourceType: string;
     path: string;
     condition?: string[];
 };
-export declare type SearchParam = {
+export type SearchParam = {
     name: string;
     url: string;
     type: 'composite' | 'date' | 'number' | 'quantity' | 'reference' | 'special' | 'string' | 'token' | 'uri';

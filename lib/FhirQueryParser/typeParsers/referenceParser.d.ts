@@ -17,7 +17,7 @@ export interface ReferenceSearchValueUnparseable {
     referenceType: 'unparseable';
     rawValue: string;
 }
-export declare type ReferenceSearchValue = ReferenceSearchValueIdOnly | ReferenceSearchValueRelative | ReferenceSearchValueUrl | ReferenceSearchValueUnparseable;
+export type ReferenceSearchValue = ReferenceSearchValueIdOnly | ReferenceSearchValueRelative | ReferenceSearchValueUrl | ReferenceSearchValueUnparseable;
 export declare const parseReferenceSearchValue: ({ target, name }: {
     target?: string[] | undefined;
     name: string;
