@@ -25,16 +25,16 @@ export function tokenQuery(
         throw new InvalidSearchParameterError(`Unsupported token search modifier: ${modifier}`);
     }
 
-    logger.error(`compiled: ${JSON.stringify(compiled)}`);
-    logger.error(`value: ${JSON.stringify(value)}`);
-    logger.error(`useKeywordSubFields: ${useKeywordSubFields}`);
-    logger.error(`modifer: ${modifier}`);
+    console.log(`compiled: ${JSON.stringify(compiled)}`);
+    console.log(`value: ${JSON.stringify(value)}`);
+    console.log(`useKeywordSubFields: ${useKeywordSubFields}`);
+    console.log(`modifer: ${modifier}`);
 
     const { system, code, explicitNoSystemProperty } = value;
 
-    logger.error(`system: ${system}`);
-    logger.error(`code: ${code}`);
-    logger.error(`explicitNoSystemProperty: ${explicitNoSystemProperty}`);
+    console.log(`system: ${system}`);
+    console.log(`code: ${code}`);
+    console.log(`explicitNoSystemProperty: ${explicitNoSystemProperty}`);
     const queries = [];
     const useKeywordSuffix = useKeywordSubFields && !FIELDS_WITHOUT_KEYWORD.includes(compiled.path);
     const keywordSuffix = useKeywordSuffix ? '.keyword' : '';
@@ -45,7 +45,7 @@ export function tokenQuery(
     // Queries can be simplified if Search gets to know the field types from the StructureDefinitions.
     // See: https://www.hl7.org/fhir/search.html#token
     if (system !== undefined) {
-        logger.error('inside of system is not undefined');
+        console.log('inside of system is not undefined');
         const fields = [
             `${compiled.path}.system${keywordSuffix}`, // Coding, Identifier
             `${compiled.path}.coding.system${keywordSuffix}`, // CodeableConcept
