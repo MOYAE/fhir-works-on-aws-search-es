@@ -50,7 +50,7 @@ const logger = getComponentLogger();
 
 const MAX_INCLUDE_ITERATIVE_DEPTH = 5;
 
-const getAliasName = (resourceType: string, tenantId?: string) => { 
+const getAliasName = (resourceType: string, tenantId?: string) => {
     const lowercaseResourceType = resourceType.toLowerCase();
     if (tenantId) {
         return `${lowercaseResourceType}-alias-tenant-${tenantId}`;
@@ -129,6 +129,7 @@ export class ElasticSearchService implements Search {
             ...(searchFilters ?? []),
         ]);
 
+        console.log('updating filters');
         if (this.enableMultiTenancy) {
             filters.push({
                 match: {
@@ -136,6 +137,8 @@ export class ElasticSearchService implements Search {
                 },
             });
         }
+
+        console.log('all filters', JSON.stringify(filters));
 
         return filters;
     }
@@ -214,6 +217,8 @@ export class ElasticSearchService implements Search {
                 },
             };
 
+            console.log('this is the query sent to ES search', JSON.stringify(params));
+
             if (request.queryParams[SORT_PARAMETER]) {
                 params.queryRequest.body!.sort = buildSortClause(
                     this.fhirSearchParametersRegistry,
@@ -221,15 +226,14 @@ export class ElasticSearchService implements Search {
                     request.queryParams[SORT_PARAMETER],
                 );
             }
-            console.log("inside ealasticSearchService"); 
-            console.log("params: ", params); 
-            console.log("request", request);
             const { total, hits } = await this.executeQuery(params, request);
             const result: SearchResult = {
                 numberOfResults: total,
                 entries: this.hitsToSearchEntries({ hits, baseUrl: request.baseUrl, mode: 'match' }),
                 message: '',
             };
+
+            console.log('this is the total hits', JSON.stringify(total));
 
             if (from !== 0) {
                 result.previousResultUrl = this.createURL(
@@ -324,9 +328,9 @@ export class ElasticSearchService implements Search {
                 };
                 // eslint-disable-next-line no-await-in-loop
 
-                console.log("inside ealasticSearchService"); 
-                console.log("params: ", params); 
-                console.log("request", request);
+                console.log('inside ealasticSearchService');
+                console.log('params: ', params);
+                console.log('request', request);
                 const { total, hits } = await this.executeQuery(params, request);
                 if (total === 0) {
                     chainComplete = false;
@@ -351,8 +355,7 @@ export class ElasticSearchService implements Search {
         searchQuery: Query,
         request: TypeSearchRequest,
     ): Promise<{ hits: any[]; total: number }> {
-
-        console.log('inside executeQuery', request.tenantId); 
+        console.log('inside executeQuery', request.tenantId);
         try {
             const searchQueryWithAlias = {
                 ...searchQuery.queryRequest,
