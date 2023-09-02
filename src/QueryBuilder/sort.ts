@@ -62,8 +62,17 @@ export const buildSortClause = (
                 // Date search params may target fields of type Period, so we add a sort clause for them.
                 // The FHIR spec does not fully specify how to sort by Period, but it makes sense that the most recent
                 // record is the one with the most recent "end" date and vice versa.
+
+                /* Note from Sami:
+                Replacing the commented out elasticsearchSort below since we need to be able to consistently sort  encounters
+                by start date
+                */
+                // elasticsearchSort(
+                //     sortParam.order === 'desc' ? `${compiledParam.path}.end` : `${compiledParam.path}.start`,
+                //     sortParam.order,
+                // ),
                 elasticsearchSort(
-                    sortParam.order === 'desc' ? `${compiledParam.path}.end` : `${compiledParam.path}.start`,
+                    `${compiledParam.path}.start`,
                     sortParam.order,
                 ),
             ];
